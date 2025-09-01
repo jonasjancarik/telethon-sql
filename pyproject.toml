@@ -3,7 +3,7 @@ requires = ["hatchling>=1.20"]
 build-backend = "hatchling.build"
 
 [project]
-name = "telethon-sqlalchemy-session"
+name = "telethon-sql"
 version = "0.1.0"
 description = "SQLAlchemy-backed Telethon session storage (PostgreSQL, MySQL, etc.)"
 readme = "README.md"
@@ -34,16 +34,16 @@ mysql = [
 ]
 
 [project.scripts]
-telethon-session-migrate = "telethon_sqlalchemy_session.migrate:main"
+telethon-sql-migrate = "telethon_sql.migrate:main"
 
 [project.urls]
-Homepage = "https://github.com/jonasjancarik/telethon-sqlalchemy-session"
-Repository = "https://github.com/jonasjancarik/telethon-sqlalchemy-session"
-Issues = "https://github.com/jonasjancarik/telethon-sqlalchemy-session/issues"
+Homepage = "https://github.com/jonasjancarik/telethon-sql"
+Repository = "https://github.com/jonasjancarik/telethon-sql"
+Issues = "https://github.com/jonasjancarik/telethon-sql/issues"
 
 [tool.hatch.build]
 include = [
-  "telethon_sqlalchemy_session/**",
+  "telethon_sql/**",
 ]
 
 

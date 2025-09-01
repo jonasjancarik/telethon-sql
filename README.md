@@ -1,4 +1,4 @@
-# telethon-sqlalchemy-session
+# telethon-sql
 
 SQLAlchemy-backed session storage for Telethon. Store sessions in Postgres (or any SQLAlchemy-supported DB) instead of SQLite.
 
@@ -7,13 +7,13 @@ SQLAlchemy-backed session storage for Telethon. Store sessions in Postgres (or a
 - Postgres (psycopg v3 extra):
 
 ```bash
-uv add "telethon-sqlalchemy-session[postgres]"
+uv add "telethon-sql[postgres]"
 ```
 
 - MySQL (PyMySQL extra):
 
 ```bash
-uv add "telethon-sqlalchemy-session[mysql]"
+uv add "telethon-sql[mysql]"
 ```
 
 For other databases, install the appropriate SQLAlchemy driver directly (not via this package), then use the correct engine URL (see Supported databases below).
@@ -22,7 +22,7 @@ For other databases, install the appropriate SQLAlchemy driver directly (not via
 
 ```python
 from telethon import TelegramClient
-from telethon_sqlalchemy_session import SQLAlchemySession
+from telethon_sql import SQLAlchemySession
 
 # Example Postgres URL (psycopg 3)
 db_url = "postgresql+psycopg://user:password@localhost:5432/telethon"
@@ -48,7 +48,7 @@ export TELETHON_DB_URL="postgresql+psycopg://user:pass@localhost:5432/telethon"
 ```python
 import os
 from telethon import TelegramClient
-from telethon_sqlalchemy_session import SQLAlchemySession
+from telethon_sql import SQLAlchemySession
 
 db_url = os.environ["TELETHON_DB_URL"]
 session = SQLAlchemySession(db_url, session_name="prod-bot")
@@ -58,7 +58,7 @@ client = TelegramClient(session, api_id, api_hash)
 ## Listing sessions in a DB
 
 ```python
-from telethon_sqlalchemy_session import SQLAlchemySession
+from telethon_sql import SQLAlchemySession
 
 names = SQLAlchemySession.list_sessions("postgresql+psycopg://user:pass@host/db")
 print(names)
@@ -74,7 +74,7 @@ print(names)
 
 ```bash
 # from inside this package directory
-uv run python -c "import telethon_sqlalchemy_session, sys; print('ok')"
+uv run python -c "import telethon_sql, sys; print('ok')"
 ```
 
 ## Build & publish (uv)
@@ -92,13 +92,13 @@ uv publish
 Single file:
 
 ```bash
-uv run telethon-session-migrate one path/to/old.session "postgresql+psycopg://user:pass@host:5432/db" --session-name my_session
+uv run telethon-sql-migrate one path/to/old.session "postgresql+psycopg://user:pass@host:5432/db" --session-name my_session
 ```
 
 Directory (batch):
 
 ```bash
-uv run telethon-session-migrate dir path/to/sessions "postgresql+psycopg://user:pass@host:5432/db"
+uv run telethon-sql-migrate dir path/to/sessions "postgresql+psycopg://user:pass@host:5432/db"
 ```
 
 - If `--session-name` is omitted for single-file mode, the name is derived from filename (e.g., `old.session` → `old`).
@@ -106,8 +106,8 @@ uv run telethon-session-migrate dir path/to/sessions "postgresql+psycopg://user:
 
 ## Supported databases and URLs
 
-- Postgres (psycopg v3): URL `postgresql+psycopg://user:pass@host:5432/db`; install with `uv add "telethon-sqlalchemy-session[postgres]"`.
-- MySQL (PyMySQL): URL `mysql+pymysql://user:pass@host:3306/db`; install with `uv add "telethon-sqlalchemy-session[mysql]"`.
+- Postgres (psycopg v3): URL `postgresql+psycopg://user:pass@host:5432/db`; install with `uv add "telethon-sql[postgres]"`.
+- MySQL (PyMySQL): URL `mysql+pymysql://user:pass@host:3306/db`; install with `uv add "telethon-sql[mysql]"`.
 - SQLite: URL `sqlite:///path/to/file.db` or `sqlite:///:memory:`; no extra driver needed.
 - MariaDB (mariadbconnector): URL `mariadb+mariadbconnector://user:pass@host:3306/db`; install with `uv add mariadb`.
 - SQL Server (pyodbc): URL `mssql+pyodbc://user:pass@DSN` or `mssql+pyodbc:///?odbc_connect=...`; install with `uv add pyodbc`.

@@ -50,7 +50,7 @@ def migrate_sqlite_to_sqlalchemy(
 
         if rows:
             # Use internal methods that mirror SQLiteSession semantics
-            from telethon_sqlalchemy_session.session import Entity
+            from telethon_sql.session import Entity
             import time as _time
 
             now_ts = int(_time.time())
