@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling>=1.20"]
+build-backend = "hatchling.build"
+
+[project]
+name = "telethon-sqlalchemy-session"
+version = "0.1.0"
+description = "SQLAlchemy-backed Telethon session storage (PostgreSQL, MySQL, etc.)"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [
+  { name = "Jonas Jancarik" }
+]
+keywords = ["telethon", "sqlalchemy", "telegram", "session", "postgres", "mysql"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Typing :: Typed",
+]
+dependencies = [
+  "Telethon>=1.30.0",
+  "SQLAlchemy>=2.0.0",
+]
+
+[project.optional-dependencies]
+postgres = [
+  "psycopg[binary]>=3.1",
+]
+mysql = [
+  "pymysql>=1.1",
+]
+
+[project.scripts]
+telethon-session-migrate = "telethon_sqlalchemy_session.migrate:main"
+
+[project.urls]
+Homepage = "https://github.com/jonasjancarik/telethon-sqlalchemy-session"
+Repository = "https://github.com/jonasjancarik/telethon-sqlalchemy-session"
+Issues = "https://github.com/jonasjancarik/telethon-sqlalchemy-session/issues"
+
+[tool.hatch.build]
+include = [
+  "telethon_sqlalchemy_session/**",
+]
+
+
