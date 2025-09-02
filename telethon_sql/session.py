@@ -19,6 +19,7 @@ try:
     from sqlalchemy import (
         Column,
         Integer,
+        BigInteger,
         String,
         LargeBinary,
         create_engine,
@@ -32,9 +33,9 @@ try:
 
     _sqlalchemy_err = None
 except Exception as e:  # pragma: no cover - import-time guard only
-    Column = Integer = String = LargeBinary = create_engine = UniqueConstraint = (
-        select
-    ) = update = delete = func = None
+    Column = Integer = BigInteger = String = LargeBinary = create_engine = (
+        UniqueConstraint
+    ) = select = update = delete = func = None
     declarative_base = sessionmaker = SASession = None
     _sqlalchemy_err = type(e)
 
@@ -65,10 +66,10 @@ class Entity(Base):  # type: ignore[misc]
     __tablename__ = "entities"
 
     session_name = Column(String(255), primary_key=True)
-    id = Column(Integer, primary_key=True)
-    hash = Column(Integer, nullable=False)
+    id = Column(BigInteger, primary_key=True)
+    hash = Column(BigInteger, nullable=False)
     username = Column(String(255), nullable=True, index=True)
-    phone = Column(Integer, nullable=True)
+    phone = Column(String(64), nullable=True)
     name = Column(String(255), nullable=True)
     date = Column(Integer, nullable=True)
 
@@ -80,15 +81,15 @@ class SentFile(Base):  # type: ignore[misc]
     md5_digest = Column(LargeBinary, primary_key=True)
     file_size = Column(Integer, primary_key=True)
     type = Column(Integer, primary_key=True)
-    id = Column(Integer)
-    hash = Column(Integer)
+    id = Column(BigInteger)
+    hash = Column(BigInteger)
 
 
 class UpdateState(Base):  # type: ignore[misc]
     __tablename__ = "update_state"
 
     session_name = Column(String(255), primary_key=True)
-    id = Column(Integer, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     pts = Column(Integer)
     qts = Column(Integer)
     date = Column(Integer)
