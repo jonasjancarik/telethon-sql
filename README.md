@@ -2,18 +2,18 @@
 
 SQLAlchemy-backed session storage for Telethon. Store sessions in Postgres (or any SQLAlchemy-supported DB) instead of SQLite.
 
-## Install (uv)
+## Install (uv) from GitHub
 
-- Postgres (psycopg v3 extra):
+- **Postgres (psycopg v3 extra)**:
 
 ```bash
-uv add "telethon-sql[postgres]"
+uv add 'telethon-sql[postgres] @ git+https://github.com/jonasjancarik/telethon-sql@main'
 ```
 
-- MySQL (PyMySQL extra):
+- **MySQL (PyMySQL extra)**:
 
 ```bash
-uv add "telethon-sql[mysql]"
+uv add 'telethon-sql[mysql] @ git+https://github.com/jonasjancarik/telethon-sql@main'
 ```
 
 For other databases, install the appropriate SQLAlchemy driver directly (not via this package), then use the correct engine URL (see Supported databases below).
@@ -99,6 +99,13 @@ Directory (batch):
 
 ```bash
 uv run telethon-sql-migrate dir path/to/sessions "postgresql+psycopg://user:pass@host:5432/db"
+```
+
+Alternative (module form) if the console script is unavailable:
+
+```bash
+uv run -m telethon_sql.migrate one path/to/old.session "postgresql+psycopg://user:pass@host:5432/db" --session-name my_session
+uv run -m telethon_sql.migrate dir path/to/sessions "postgresql+psycopg://user:pass@host:5432/db"
 ```
 
 - If `--session-name` is omitted for single-file mode, the name is derived from filename (e.g., `old.session` → `old`).
