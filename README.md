@@ -2,6 +2,8 @@
 
 SQLAlchemy-backed session storage for Telethon. Store sessions in Postgres (or any SQLAlchemy-supported DB) instead of SQLite.
 
+> Note: synchronous-only. Telethon's session interface is sync, and there is no async session variant. Use synchronous SQLAlchemy engines/drivers (async URLs/drivers are not supported).
+
 ## Install (uv) from GitHub
 
 - **Postgres (psycopg v3 extra)**:
@@ -67,7 +69,7 @@ print(names)
 ## Notes
 
 - Schema is created automatically on first use.
-- This package is synchronous. If you need async, open an issue.
+- This package is synchronous-only. Telethon's session API is sync; async drivers/URLs and SQLAlchemy's AsyncEngine are not supported. If you need async, open an issue.
 - No migrations are required at this time.
 
 ## Develop & test (uv)
