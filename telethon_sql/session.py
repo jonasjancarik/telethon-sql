@@ -1,7 +1,7 @@
 import datetime
 import time
 
-from typing import Generator, Iterable, Optional, Tuple
+from typing import Iterable, Tuple
 
 from telethon.tl import types as tl_types
 from telethon.sessions.memory import MemorySession, _SentFileType
@@ -28,7 +28,6 @@ try:
         update,
         delete,
         func,
-        text,
     )
     from sqlalchemy.orm import declarative_base, sessionmaker, Session as SASession
 
@@ -139,77 +138,6 @@ class SQLAlchemySession(MemorySession):
                 # If older versions are ever needed, migration logic would go here.
                 s.merge(Version(version=DATABASE_VERSION))
                 s.commit()
-
-        # Best-effort in-place upgrades to widen columns that may overflow on some RDBMS
-        try:
-            with self._engine.begin() as conn:
-                dialect_name = conn.dialect.name
-                if dialect_name == "postgresql":
-                    try:
-                        conn.execute(
-                            text(
-                                "ALTER TABLE sessions ALTER COLUMN takeout_id TYPE BIGINT"
-                            )
-                        )
-                    except Exception:
-                        pass
-                    try:
-                        conn.execute(
-                            text("ALTER TABLE entities ALTER COLUMN date TYPE BIGINT")
-                        )
-                    except Exception:
-                        pass
-                    for col in ("pts", "qts", "date", "seq"):
-                        try:
-                            conn.execute(
-                                text(
-                                    f"ALTER TABLE update_state ALTER COLUMN {col} TYPE BIGINT"
-                                )
-                            )
-                        except Exception:
-                            pass
-                    try:
-                        conn.execute(
-                            text(
-                                "ALTER TABLE sent_files ALTER COLUMN file_size TYPE BIGINT"
-                            )
-                        )
-                    except Exception:
-                        pass
-                elif dialect_name in ("mysql", "mariadb"):
-                    try:
-                        conn.execute(
-                            text("ALTER TABLE sessions MODIFY COLUMN takeout_id BIGINT")
-                        )
-                    except Exception:
-                        pass
-                    try:
-                        conn.execute(
-                            text("ALTER TABLE entities MODIFY COLUMN date BIGINT")
-                        )
-                    except Exception:
-                        pass
-                    # MySQL requires separate MODIFYs; ignore failures if already BIGINT
-                    for col in ("pts", "qts", "date", "seq"):
-                        try:
-                            conn.execute(
-                                text(
-                                    f"ALTER TABLE update_state MODIFY COLUMN {col} BIGINT"
-                                )
-                            )
-                        except Exception:
-                            pass
-                    try:
-                        conn.execute(
-                            text(
-                                "ALTER TABLE sent_files MODIFY COLUMN file_size BIGINT"
-                            )
-                        )
-                    except Exception:
-                        pass
-        except Exception:
-            # Swallow any unexpected failures; schema may already be up-to-date or DB lacks perms
-            pass
 
     def _load_existing_session(self) -> None:
         with self._SessionLocal() as s:
